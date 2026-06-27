@@ -1,32 +1,37 @@
 # Visit https://github.com/lowlighter/metrics#-documentation for full reference
 name: Metrics
 on:
-  # Schedule updates (each hour)
-  schedule: [{cron: "0 * * * *"}]
-  # Lines below let you run workflow manually and on each commit
+  # Schedule updates (once per day at 00:00 UTC / 08:00 CST)
+  schedule: [{cron: "0 0 * * *"}]
+  # Lines below let you run workflow manually
   workflow_dispatch:
-  push: {branches: ["master", "main"]}
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - uses: lowlighter/metrics@latest
+      - uses: actions/checkout@v4
+      - name: Generate metrics
+        uses: lowlighter/metrics@latest
         with:
-          # Your GitHub token
-          # The following scopes are required:
-          #  - public_access (default scope)
-          # The following additional scopes may be required:
-          #  - read:org      (for organization related metrics)
-          #  - read:user     (for user related data)
-          #  - read:packages (for some packages related data)
-          #  - repo          (optional, if you want to include private repositories)
-          # token: ${{ secrets.METRICS_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
-
-          # Options
           user: NOBB2333
           template: classic
           base: header, activity, community, repositories, metadata
           config_timezone: Asia/Shanghai
+          config_output: svg
+          filename: github-metrics.svg
+      - name: Prepare output directory
+        run: |
+          mkdir -p dist/metrics
+          mv github-metrics.svg dist/metrics/github-metrics.svg
+      - name: Push to output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist/metrics
+          keep_history: false
+          commit_message: "Update github-metrics"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

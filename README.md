@@ -6,7 +6,7 @@
 
 [![NOBB2333](https://readme-typing-svg.demolab.com/?lines=Building+with+C%23,+Go+and+practical+tooling;Focused+on+CLI,+desktop+apps+and+cross-device+sync;Shipping+ideas+through+small+useful+projects)](https://git.io/typing-svg)
 
-![Metrics](https://metrics.lecoq.io/NOBB2333?template=classic&lines=1&base=header%2Cactivity%2Ccommunity%2Crepositories%2Cmetadata&base.indepth=false&base.hireable=false&base.skip=false&lines=false&config.timezone=Asia%2FShanghai)
+![Metrics](https://raw.githubusercontent.com/NOBB2333/NOBB2333/output/metrics/github-metrics.svg)
 <!--
 **NOBB2333/NOBB2333** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
