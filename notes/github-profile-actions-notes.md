@@ -16,7 +16,7 @@
 
 | Action | 文件 | 运行频率 | 生成物 | 提交目标 |
 |--------|------|----------|--------|----------|
-| Metrics | `.github/workflows/Metrics.yml` | 每天 1 次（UTC 00:00） | `metrics/github-metrics.svg` | `output` 分支 |
+| Metrics | `.github/workflows/Metrics.yml` | 每天 1 次（UTC 00:10） | `metrics/github-metrics.svg` | `output` 分支 |
 | GitHub-Profile-3D-Contrib | `.github/workflows/profile-3d.yml` | 每天 1 次（UTC 18:00） | `profile-3d-contrib/*.svg` | `output` 分支 |
 | Generate Snake | `.github/workflows/Generate Snake.yml` | 每天 1 次（UTC 00:00） | `github-contribution-grid-snake*.svg` | `output` 分支 |
 
@@ -76,7 +76,8 @@
 
 - 改到 `output` 分支后，`main` 只能看到当前引用的最新 SVG。
 - 历史 SVG 需要通过 `output` 分支的 commit 历史查看。
-- `lowlighter/metrics` 默认提交到当前分支，改目标分支需要额外配置。
+- `lowlighter/metrics` 默认提交到当前分支，改目标分支需要设置 `committer_branch: output`。
+- 多个 workflow 不能用“整目录发布”的方式反复覆盖同一个 `output` 分支；每个 workflow 应只更新自己负责的路径。
 
 ---
 
@@ -96,6 +97,7 @@
 
 - GitHub Actions 的 `schedule` 按 UTC 执行。
 - `0 0 * * *` = UTC 00:00 = 北京时间 08:00。
+- `10 0 * * *` = UTC 00:10 = 北京时间 08:10。
 - `0 18 * * *` = UTC 18:00 = 北京时间次日 02:00。
 
 ---

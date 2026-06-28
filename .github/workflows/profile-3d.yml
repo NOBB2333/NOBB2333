@@ -12,17 +12,33 @@ jobs:
       contents: write
     name: generate-github-profile-3d-contrib
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: yoshi389111/github-profile-3d-contrib@0.7.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
-      - name: Push to output branch
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+
+      - name: Checkout output branch
+        uses: actions/checkout@v4
         with:
-          target_branch: output
-          build_dir: profile-3d-contrib
-          keep_history: false
-          commit_message: "Update profile-3d-contrib"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ref: output
+          path: output-branch
+          fetch-depth: 0
+
+      - name: Publish profile 3D SVGs
+        run: |
+          set -euo pipefail
+          rm -rf output-branch/profile-3d-contrib
+          mkdir -p output-branch/profile-3d-contrib
+          cp -R profile-3d-contrib/. output-branch/profile-3d-contrib/
+          cd output-branch
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add profile-3d-contrib
+          if git diff --cached --quiet; then
+            echo "No profile 3D changes to publish"
+            exit 0
+          fi
+          git commit -m "Update profile-3d-contrib - [Skip GitHub Action]"
+          git pull --rebase origin output
+          git push origin HEAD:output
